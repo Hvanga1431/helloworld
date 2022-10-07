@@ -3,11 +3,11 @@
 //def server = Artifactory.server 'myjfrog'
 
 pipeline {
-  agent { label: "slave-label"}
+  agent any
     stages {
         stage('SCM Git clone') {
             steps {
-               git credentialsId: 'github', url: 'https://github.com/tejesh555/helloworld.git'
+               git credentialsId: 'github', url: 'https://github.com/xyz.git'
             }       
         }
 
@@ -33,12 +33,12 @@ pipeline {
                 script {
 
                     rtUpload (
-                        serverId: 'myjfrog',
+                        serverId: 'myjfrog_id',
                         spec: '''{
                               "files": [
                                 {
-                                  "pattern": "target/*.jar",
-                                  "target": "helloworld/"
+                                  "pattern": "src",
+                                  "target": "target_destination"
                                 }
                              ]
                         } '''
@@ -58,7 +58,7 @@ pipeline {
     }
     post {
         always {
-         emailext body: 'this is status of job "${BUILD_URL}"', subject: 'Job Status', to: 'tejesh2311@gmail.com'   
+         emailext body: 'this is status of job "${BUILD_URL}"', subject: 'Job Status', to: 'xyz@gmail.com'   
         }
     }
 }
